@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block title %}Дашборд{% endblock %}
+{% block content %}
+<h1>Дашборд</h1>
+<div class="grid">
+  <div class="card">
+    <h3>Сводка по статусам</h3>
+    <table><thead><tr><th>Статус</th><th>Количество</th></tr></thead>
+    <tbody>{% for row in status_data %}<tr><td>{{ row.status_display }}</td><td>{{ row.cnt }}</td></tr>{% empty %}
+    <tr><td colspan="2">Нет данных</td></tr>{% endfor %}</tbody></table>
+  </div>
+  <div class="card">
+    <h3>Просроченные</h3>
+    <p>{{ overdue_count }} дефект(ов) просрочено.</p>
+    <a class="btn" href="{% url 'defects:list' %}?overdue=1">Перейти к списку</a>
+  </div>
+</div>
+{% endblock %}
