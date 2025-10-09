@@ -1,0 +1,38 @@
+{% extends "base.html" %}{% block title %}Дефекты{% endblock %}
+{% block content %}
+<h1>Дефекты</h1>
+<form method="get" class="card" style="margin-bottom:1rem;">
+  <div class="grid">
+    <div><label>Поиск</label><input type="text" name="q" value="{{ request.GET.q }}"></div>
+    <div><label>Статус</label><select name="status"><option value="">— любой —</option>
+      {% for code,name in statuses %}<option value="{{ code }}" {% if request.GET.status == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
+    </select></div>
+    <div><label>Приоритет</label><select name="priority"><option value="">— любой —</option>
+      {% for code,name in priorities %}<option value="{{ code }}" {% if request.GET.priority == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
+    </select></div>
+    <div><label>Просроченные</label><input type="checkbox" name="overdue" value="1" {% if request.GET.overdue %}checked{% endif %}></div>
+  </div>
+  <div class="actions">
+    <button class="btn" type="submit">Фильтровать</button>
+    <a class="btn" href="{% url 'defects:create' %}">Новый дефект</a>
+    <a class="btn" href="{% url 'defects:export_csv' %}">Экспорт CSV</a>
+    <a class="btn" href="{% url 'defects:export_excel' %}">Экспорт Excel</a>
+  </div>
+</form>
+<table>
+  <thead><tr><th>ID</th><th>Заголовок</th><th>Проект</th><th>Приоритет</th><th>Статус</th><th>Исполнитель</th><th>Срок</th><th></th></tr></thead>
+  <tbody>{% for d in items %}
+    <tr>
+      <td>{{ d.id }}</td>
+      <td><a href="{% url 'defects:detail' d.id %}">{{ d.title }}</a></td>
+      <td>{{ d.project.name }}</td>
+      <td>{{ d.get_priority_display }}</td>
+      <td>{{ d.get_status_display }}</td>
+      <td>{{ d.assignee }}</td>
+      <td>{{ d.due_date|default:"—" }}</td>
+      <td><a class="btn" href="{% url 'defects:edit' d.id %}">Править</a></td>
+    </tr>
+  {% empty %}<tr><td colspan="8">Нет данных</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}
