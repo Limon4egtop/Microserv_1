@@ -10,10 +10,17 @@
   <li><a href="{% url 'defects:list' %}">Дефекты</a></li>
   <li><a href="{% url 'projects:list' %}">Объекты</a></li>
   {% if user.is_authenticated %}
-    <li class="right"><a href="{% url 'accounts:logout' %}">Выход ({{ user.username }})</a></li>
-  {% else %}
-    <li class="right"><a href="{% url 'accounts:login' %}">Вход</a></li>
-  {% endif %}
+  <li class="right">
+    <form method="post" action="{% url 'accounts:logout' %}">
+      {% csrf_token %}
+      <button class="as-link" style="background:none;border:none;color:#fff;cursor:pointer;padding:0;">
+        Выход ({{ user.username }})
+      </button>
+    </form>
+  </li>
+{% else %}
+  <li class="right"><a href="{% url 'accounts:login' %}">Вход</a></li>
+{% endif %}
 </ul></nav></header>
 <main class="container">{% for message in messages %}<div class="alert">{{ message }}</div>{% endfor %}{% block content %}{% endblock %}</main>
 <footer class="footer container"><small>© {% now "Y" %} Система управления дефектами</small></footer>

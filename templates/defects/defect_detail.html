@@ -14,9 +14,11 @@
     <h3>Смена статуса</h3>
     <form method="post" action="{% url 'defects:status' obj.id %}">{% csrf_token %}
       <select name="status">
-        {% for code,name in obj._meta.get_field('status').choices %}
-          {% if code in allowed_transitions %}<option value="{{ code }}" {% if code == obj.status %}selected{% endif %}>{{ name }}</option>{% endif %}
-        {% endfor %}
+          {% for code, name in status_choices %}
+            {% if code in allowed_transitions %}
+              <option value="{{ code }}" {% if code == obj.status %}selected{% endif %}>{{ name }}</option>
+            {% endif %}
+          {% endfor %}
       </select>
       <button class="btn" type="submit">Применить</button>
     </form>
