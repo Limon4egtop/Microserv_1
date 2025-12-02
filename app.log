@@ -91,3 +91,27 @@ django.template.exceptions.TemplateSyntaxError: Variables and attributes may not
 /Users/vladimirfilimonov/PycharmProjects/Microserv_1/defects/views.py changed, reloading.
 Watching for file changes with StatReloader
 Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Not Found: /favicon.ico
+Internal Server Error: /defects/
+Traceback (most recent call last):
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/.venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/.venv/lib/python3.13/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/.venv/lib/python3.13/site-packages/django/contrib/auth/mixins.py", line 73, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/.venv/lib/python3.13/site-packages/django/views/generic/base.py", line 144, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/.venv/lib/python3.13/site-packages/django/views/generic/list.py", line 178, in get
+    context = self.get_context_data()
+  File "/Users/vladimirfilimonov/PycharmProjects/Microserv_1/defects/views.py", line 49, in get_context_data
+    code for code, name in Status.choices if self.object.can_transition(code)
+                                             ^^^^^^^^^^^
+AttributeError: 'DefectListView' object has no attribute 'object'

@@ -43,7 +43,6 @@ class DefectListView(LoginRequiredMixin, ListView):
         ctx = super().get_context_data(**kwargs)
         ctx["comment_form"] = CommentForm()
         ctx["attach_form"] = AttachmentForm()
-        # что можно выбрать (по модели) и что разрешено (по workflow)
         ctx["status_choices"] = Defect._meta.get_field("status").choices
         ctx["allowed_transitions"] = [
             code for code, name in Status.choices if self.object.can_transition(code)
