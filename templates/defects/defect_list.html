@@ -4,9 +4,16 @@
 <form method="get" class="card" style="margin-bottom:1rem;">
   <div class="grid">
     <div><label>Поиск</label><input type="text" name="q" value="{{ request.GET.q }}"></div>
-    <div><label>Статус</label><select name="status"><option value="">— любой —</option>
-      {% for code,name in statuses %}<option value="{{ code }}" {% if request.GET.status == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
-    </select></div>
+    <div><label>Статус</label><select name="status">
+  {% for code, name in status_choices %}
+    {% if code in allowed_transitions %}
+      <option value="{{ code }}" {% if code == obj.status %}selected{% endif %}>
+        {{ name }}
+      </option>
+    {% endif %}
+  {% endfor %}
+</select>
+</div>
     <div><label>Приоритет</label><select name="priority"><option value="">— любой —</option>
       {% for code,name in priorities %}<option value="{{ code }}" {% if request.GET.priority == code %}selected{% endif %}>{{ name }}</option>{% endfor %}
     </select></div>

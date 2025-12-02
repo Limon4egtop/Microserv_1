@@ -115,3 +115,9 @@ Traceback (most recent call last):
     code for code, name in Status.choices if self.object.can_transition(code)
                                              ^^^^^^^^^^^
 AttributeError: 'DefectListView' object has no attribute 'object'
+/Users/vladimirfilimonov/PycharmProjects/Microserv_1/defects/views.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/vladimirfilimonov/PycharmProjects/Microserv_1/defects/views.py changed, reloading.
+Watching for file changes with StatReloader
+/Users/vladimirfilimonov/PycharmProjects/Microserv_1/defects/views.py changed, reloading.
+Watching for file changes with StatReloader

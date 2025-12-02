@@ -18,35 +18,40 @@ from .forms import DefectForm, CommentForm, AttachmentForm
 
 
 class DefectListView(LoginRequiredMixin, ListView):
-    model = Defect;
-    template_name = "defects/defect_list.html";
-    context_object_name = "items";
+    model = Defect
+    template_name = "defects/defect_list.html"
+    context_object_name = "items"
     paginate_by = 25
 
     def get_queryset(self):
         qs = super().get_queryset().select_related("project", "stage", "assignee", "reporter")
-        q = self.request.GET.get("q");
+        q = self.request.GET.get("q")
         status = self.request.GET.get("status")
-        priority = self.request.GET.get("priority");
+        priority = self.request.GET.get("priority")
         project = self.request.GET.get("project")
-        assignee = self.request.GET.get("assignee");
+        assignee = self.request.GET.get("assignee")
         overdue = self.request.GET.get("overdue")
-        if q: qs = qs.filter(Q(title__icontains=q) | Q(description__icontains=q))
-        if status: qs = qs.filter(status=status)
-        if priority: qs = qs.filter(priority=priority)
-        if project: qs = qs.filter(project_id=project)
-        if assignee: qs = qs.filter(assignee_id=assignee)
-        if overdue: qs = qs.filter(due_date__lt=date.today()).exclude(status__in=[Status.CLOSED, Status.CANCELED])
+
+        if q:
+            qs = qs.filter(Q(title__icontains=q) | Q(description__icontains=q))
+        if status:
+            qs = qs.filter(status=status)
+        if priority:
+            qs = qs.filter(priority=priority)
+        if project:
+            qs = qs.filter(project_id=project)
+        if assignee:
+            qs = qs.filter(assignee_id=assignee)
+        if overdue:
+            qs = qs.filter(due_date__lt=date.today()).exclude(
+                status__in=[Status.CLOSED, Status.CANCELED]
+            )
         return qs
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["comment_form"] = CommentForm()
-        ctx["attach_form"] = AttachmentForm()
-        ctx["status_choices"] = Defect._meta.get_field("status").choices
-        ctx["allowed_transitions"] = [
-            code for code, name in Status.choices if self.object.can_transition(code)
-        ]
+        ctx["statuses"] = Status.choices
+        ctx["priorities"] = Priority.choices
         return ctx
 
 
@@ -78,15 +83,20 @@ class DefectUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class DefectDetailView(LoginRequiredMixin, DetailView):
-    model = Defect;
-    template_name = "defects/defect_detail.html";
+    model = Defect
+    template_name = "defects/defect_detail.html"
     context_object_name = "obj"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["comment_form"] = CommentForm();
+        ctx["comment_form"] = CommentForm()
         ctx["attach_form"] = AttachmentForm()
-        ctx["allowed_transitions"] = [code for code, name in Status.choices if self.object.can_transition(code)]
+        # все возможные статусы по модели
+        ctx["status_choices"] = Defect._meta.get_field("status").choices
+        # какие переходы разрешены для конкретного дефекта
+        ctx["allowed_transitions"] = [
+            code for code, name in Status.choices if self.object.can_transition(code)
+        ]
         return ctx
 
 
